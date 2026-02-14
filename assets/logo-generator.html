@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CoVaib Logo Generator</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #0f172a; 
+            color: white; 
+            text-align: center; 
+        }
+        canvas { 
+            border: 2px solid #fbbf24; 
+            border-radius: 12px;
+            margin: 20px;
+        }
+        button { 
+            background: linear-gradient(135deg, #fbbf24, #f59e0b); 
+            color: #0f172a; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin: 10px;
+        }
+        button:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(251,191,36,0.3); 
+        }
+    </style>
+</head>
+<body>
+    <h1>CoVaib Logo Generator</h1>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <br>
+    <button onclick="downloadLogo()">Download Logo as PNG</button>
+    <button onclick="generateLogo()">Regenerate Logo</button>
+    
+    <script>
+        function generateLogo() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, 512, 512);
+            
+            // Dark blue background with subtle gradient
+            const bgGradient = ctx.createLinearGradient(0, 0, 512, 512);
+            bgGradient.addColorStop(0, '#0f172a');
+            bgGradient.addColorStop(1, '#1e293b');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, 512, 512);
+            
+            // Add rounded corners
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, 512, 512, 64);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Create metallic gold gradient for C
+            const goldGradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 200);
+            goldGradient.addColorStop(0, '#fbbf24');
+            goldGradient.addColorStop(0.3, '#f59e0b');
+            goldGradient.addColorStop(0.6, '#d97706');
+            goldGradient.addColorStop(0.8, '#b45309');
+            goldGradient.addColorStop(1, '#fbbf24');
+            
+            // Draw large metallic C with 3D effect
+            ctx.fillStyle = goldGradient;
+            ctx.strokeStyle = '#fcd34d';
+            ctx.lineWidth = 4;
+            
+            // Main C shape
+            ctx.beginPath();
+            ctx.moveTo(120, 120);
+            ctx.quadraticCurveTo(120, 80, 160, 80);
+            ctx.lineTo(320, 80);
+            ctx.quadraticCurveTo(360, 80, 360, 120);
+            ctx.lineTo(360, 200);
+            ctx.quadraticCurveTo(360, 240, 320, 240);
+            ctx.lineTo(240, 240);
+            ctx.lineTo(240, 280);
+            ctx.lineTo(320, 280);
+            ctx.quadraticCurveTo(360, 280, 360, 320);
+            ctx.lineTo(360, 380);
+            ctx.quadraticCurveTo(360, 420, 320, 420);
+            ctx.lineTo(160, 420);
+            ctx.quadraticCurveTo(120, 420, 120, 380);
+            ctx.lineTo(120, 120);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Add inner shadow for 3D effect
+            ctx.strokeStyle = '#92400e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(125, 125);
+            ctx.quadraticCurveTo(125, 85, 165, 85);
+            ctx.lineTo(315, 85);
+            ctx.quadraticCurveTo(355, 85, 355, 125);
+            ctx.lineTo(355, 195);
+            ctx.quadraticCurveTo(355, 235, 315, 235);
+            ctx.lineTo(235, 235);
+            ctx.lineTo(235, 285);
+            ctx.lineTo(315, 285);
+            ctx.quadraticCurveTo(355, 285, 355, 325);
+            ctx.lineTo(355, 375);
+            ctx.quadraticCurveTo(355, 415, 315, 415);
+            ctx.lineTo(165, 415);
+            ctx.quadraticCurveTo(125, 415, 125, 375);
+            ctx.lineTo(125, 125);
+            ctx.stroke();
+            
+            // Draw silver laptop with metallic effect
+            const laptopGradient = ctx.createLinearGradient(240, 200, 280, 260);
+            laptopGradient.addColorStop(0, '#e5e7eb');
+            laptopGradient.addColorStop(0.5, '#c0c0c0');
+            laptopGradient.addColorStop(1, '#9ca3af');
+            
+            // Laptop base
+            ctx.fillStyle = laptopGradient;
+            ctx.fillRect(240, 220, 80, 50);
+            
+            // Laptop screen
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(248, 208, 64, 40);
+            
+            // Screen border
+            ctx.strokeStyle = '#d1d5db';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(248, 208, 64, 40);
+            
+            // Orange trending graph with glow effect
+            ctx.shadowColor = '#ff6b35';
+            ctx.shadowBlur = 4;
+            ctx.strokeStyle = '#ff6b35';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(255, 235);
+            ctx.lineTo(265, 230);
+            ctx.lineTo(275, 225);
+            ctx.lineTo(285, 220);
+            ctx.lineTo(295, 215);
+            ctx.lineTo(300, 212);
+            ctx.stroke();
+            
+            // Reset shadow
+            ctx.shadowBlur = 0;
+            
+            // Data points with glow
+            ctx.fillStyle = '#ff6b35';
+            ctx.shadowColor = '#ff6b35';
+            ctx.shadowBlur = 3;
+            ctx.beginPath();
+            ctx.arc(255, 235, 2.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(265, 230, 2.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(275, 225, 2.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(285, 220, 2.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(295, 215, 2.5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Arrow at peak
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = '#ff6b35';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(295, 215);
+            ctx.lineTo(300, 212);
+            ctx.lineTo(297, 216);
+            ctx.stroke();
+            
+            // Add subtle glow around the entire logo
+            ctx.shadowColor = '#fbbf24';
+            ctx.shadowBlur = 20;
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#fbbf24';
+            ctx.fillRect(0, 0, 512, 512);
+            ctx.globalAlpha = 1;
+            ctx.shadowBlur = 0;
+        }
+        
+        function downloadLogo() {
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = 'logo-512.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Generate logo on page load
+        generateLogo();
+    </script>
+</body>
+</html>

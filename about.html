@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — CoVaib-DeepLearn</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/Logo.jpg" alt="Logo" class="logo" />
+        <div class="brand-text">
+          <strong class="brand-name">COVAIB <span class="brand-sub">DeepLearn</span></strong>
+          <small>Elite Interview Prep — MAANG++ & Tier-1</small>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="courses.html">InDepth Learning Kit</a>
+        <a href="services.html">Services</a>
+        <a href="free-content.html">Free Content</a>
+        <a href="contact.html" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="offer-banner" id="offerBanner">
+    <div class="inner">
+      <div class="marquee-content">
+        <span>🔥 Limited Time Offer: Use <span class="offer-code">8MWPB9I</span> for <strong>90% off</strong> on all courses till December 2025.</span>
+        <span>🔥 Limited Time Offer: Use <span class="offer-code">8MWPB9I</span> for <strong>90% off</strong> on all courses till December 2025.</span>
+      </div>
+      <button class="offer-close" id="offerClose" aria-label="Close offer">✕</button>
+    </div>
+  </div>
+
+  <main class="wrap section">
+    <h1>🚀 About CoVaib-DeepLearn</h1>
+
+    <div class="about-intro">
+      <p>At <strong>CoVaib-DeepLearn</strong>, we believe average preparation will never unlock Tier-1 opportunities.</p>
+      
+      <p>Founded by a Java System Design Engineer preparing for MAANG++ interviews, CoVaib-DeepLearn began as a personal journey to secure competitive Tier-1 roles. Today, it has grown into a platform for ambitious developers worldwide who want to aim higher, master backend engineering, and prepare with Tier-1 rigor.</p>
+    </div>
+
+    <div class="mission-section">
+      <h2>🔥 Our Mission</h2>
+      <p class="mission-text">To make elite prep accessible and empower developers to land competitive MAANG++ & Tier-1 roles.</p>
+    </div>
+
+    <div class="founder-story">
+      <h2>👨‍💻 Founder Story</h2>
+      <p>Built by an Aspirant, for Aspirants — Designed by someone on the same journey, sharing the exact Tier-1 playbook. The course material is battle-tested against real interview patterns and built from the exact study playbook used by the founder.</p>
+    </div>
+
+    <div class="course-structure">
+      <h2>📂 Course Structure</h2>
+      <p>Every CoVaib-DeepLearn course follows a proven Tier-1 structure:</p>
+      <div class="structure-steps">
+        <div class="step">
+          <div class="step-number">1️⃣</div>
+          <div class="step-content">
+            <h3>Concept Deep Dive</h3>
+            <p>With diagrams & real-world analogies</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2️⃣</div>
+          <div class="step-content">
+            <h3>Interview Q&A Bank</h3>
+            <p>50–70 questions per concept with answers</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3️⃣</div>
+          <div class="step-content">
+            <h3>Cheat Sheets</h3>
+            <p>Quick notes for fast revision</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4️⃣</div>
+          <div class="step-content">
+            <h3>Hands-On Repos</h3>
+            <p>Runnable GitHub codebases & mini-projects</p>
+          </div>
+        </div>
+      </div>
+      <p class="structure-note">This ensures you learn, practice, revise, and apply — the exact formula Tier-1 engineers follow.</p>
+    </div>
+
+    <div style="margin-top:18px">
+      <a class="btn" href="courses.html">See Learning Kit & Structure</a>
+      <a class="btn ghost" href="contact.html">Contact / Collaborate</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div><strong>CoVaib-DeepLearn</strong></div>
+      <div class="footer-actions">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Advanced Learning Kit</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="muted">© <span id="year2"></span> CoVaib-DeepLearn</div>
+    </div>
+  </footer>
+
+  <a href="#top" id="backToTop" class="back-to-top"><span class="btn ghost">Back to top ↑</span></a>
+
+  <script>
+    document.getElementById('year2').textContent = new Date().getFullYear();
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll',()=>{
+      if(window.scrollY>300){backToTop.classList.add('show')}else{backToTop.classList.remove('show')}
+    });
+    // offer banner close and dynamic positioning
+    (function(){
+      const banner=document.getElementById('offerBanner');
+      const close=document.getElementById('offerClose');
+      const body=document.body;
+      const header=document.querySelector('.site-header');
+      function updateBannerPosition(){
+        if(header&&banner){
+          const headerHeight=header.offsetHeight;
+          banner.style.top=headerHeight+'px';
+        }
+      }
+      function updateBannerState(){
+        if(banner&&banner.style.display!=='none'){
+          body.classList.add('has-offer-banner');
+          updateBannerPosition();
+        }else{
+          body.classList.remove('has-offer-banner');
+        }
+      }
+      if(sessionStorage.getItem('offerDismissed')==='1'){
+        if(banner)banner.style.display='none';
+      }else{
+        body.classList.add('has-offer-banner');
+      }
+      updateBannerPosition();
+      updateBannerState();
+      window.addEventListener('resize',updateBannerPosition);
+      close&&close.addEventListener('click',()=>{
+        if(banner)banner.style.display='none';
+        sessionStorage.setItem('offerDismissed','1');
+        body.classList.remove('has-offer-banner');
+      });
+    })();
+  </script>
+</body>
+</html>

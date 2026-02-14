@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Java Cheat Sheets — CoVaib-DeepLearn</title>
+  <meta name="description" content="Free Java cheat sheets covering OOP concepts, interfaces, abstract classes, and more. Practical reference materials for interview preparation." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="assets/logo-512.png" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/Logo.jpg" alt="CoVaib-DeepLearn logo" class="logo" />
+        <div class="brand-text">
+          <strong class="brand-name">COVAIB <span class="brand-sub">DeepPrep</span></strong>
+          <small>Elite Interview Prep — MAANG++ & Tier-1</small>
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="free-content.html">Free Content</a>
+        <a href="contact.html" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="offer-banner" id="offerBanner">
+    <div class="inner">
+      <div class="marquee-content">
+        <span>🔥 Limited Time Offer: Use <span class="offer-code">8MWPB9I</span> for <strong>90% off</strong> on all courses till December 2025.</span>
+        <span>🔥 Limited Time Offer: Use <span class="offer-code">8MWPB9I</span> for <strong>90% off</strong> on all courses till December 2025.</span>
+      </div>
+      <button class="offer-close" id="offerClose" aria-label="Close offer">✕</button>
+    </div>
+  </div>
+
+  <main class="wrap section">
+    <h1>📚 Free Java Cheat Sheets</h1>
+    <p class="muted">Practical reference materials from our Tier-1 preparation journey. Download, study, and ace your interviews.</p>
+
+    <div class="cheat-sheets-intro">
+      <h2>🎯 Why These Cheat Sheets?</h2>
+      <p>These aren't just theory - they're battle-tested materials used in real MAANG++ interview preparation. Each sheet covers:</p>
+      <ul class="bullet">
+        <li><strong>Core Concepts</strong> — Clear definitions and explanations</li>
+        <li><strong>JVM Internals</strong> — How it works under the hood</li>
+        <li><strong>Real Examples</strong> — Practical code snippets</li>
+        <li><strong>Interview Focus</strong> — What interviewers actually ask</li>
+      </ul>
+    </div>
+
+    <div class="cheat-sheets-grid">
+      <div class="cheat-sheet-card">
+        <div class="cheat-sheet-header">
+          <h3>Interface</h3>
+          <span class="difficulty-badge">Core</span>
+        </div>
+        <div class="cheat-sheet-preview">
+          <h4>Concept:</h4>
+          <p>Contract with method signatures, constants, and default/static methods. Supports multiple inheritance of type.</p>
+          
+          <h4>Why Interfaces?:</h4>
+          <ul>
+            <li><strong>Decoupling:</strong> Code against contracts (List vs ArrayList)</li>
+            <li><strong>Multiple inheritance:</strong> Classes can implement many interfaces</li>
+            <li><strong>Usefulness:</strong> Plugins, frameworks, testing (mocking)</li>
+          </ul>
+
+          <h4>JVM Internals:</h4>
+          <ul>
+            <li>Compiled with <code>ACC_INTERFACE</code></li>
+            <li>JVM uses <code>itable</code> (interface method table) for dispatch</li>
+            <li><code>invokeinterface</code> resolved via IMT mapping + JIT optimizations</li>
+          </ul>
+
+          <div class="code-example">
+            <h4>Example:</h4>
+            <pre><code>interface Printer {
+    void print(String msg);
+}
+
+class ConsolePrinter implements Printer {
+    @Override
+    public void print(String msg) {
+        System.out.println(msg);
+    }
+}
+
+class Report {
+    private final Printer printer;
+    
+    Report(Printer p) { this.printer = p; }
+    
+    void generate(String data) {
+        System.out.println("Generating...");
+        printer.print(data);
+    }
+}</code></pre>
+          </div>
+        </div>
+        <div class="cheat-sheet-actions">
+          <a href="#" class="btn primary">Download PDF</a>
+          <a href="#" class="btn ghost">View Full</a>
+        </div>
+      </div>
+
+      <div class="cheat-sheet-card">
+        <div class="cheat-sheet-header">
+          <h3>Abstract Class</h3>
+          <span class="difficulty-badge">Core</span>
+        </div>
+        <div class="cheat-sheet-preview">
+          <h4>Concept:</h4>
+          <ul>
+            <li>Declared with <code>abstract</code>, cannot be instantiated directly</li>
+            <li>May contain abstract + concrete methods, fields, constructors</li>
+          </ul>
+          
+          <h4>Why Abstract Classes?:</h4>
+          <ul>
+            <li><strong>Shared state + behavior:</strong> subclasses reuse fields + code</li>
+            <li><strong>Enforce contract:</strong> ensure subclasses implement methods</li>
+            <li><strong>No direct instantiation:</strong> model incomplete entities (e.g., Shape)</li>
+          </ul>
+
+          <h4>JVM Internals:</h4>
+          <ul>
+            <li>Compiled with <code>ACC_ABSTRACT</code> flag in classfile</li>
+            <li>Vtable: abstract methods reserve slots, subclass must fill</li>
+            <li><code>new</code> opcode rejected at verification for abstract class</li>
+            <li>Superclass constructor still runs on instantiation</li>
+          </ul>
+
+          <div class="code-example">
+            <h4>Real-World Example:</h4>
+            <pre><code>abstract class Shape {
+    String color;
+    
+    Shape(String color) { this.color = color; }
+    
+    abstract double area();
+    
+    void displayColor() {
+        System.out.println("Color: " + color);
+    }
+}
+
+class Circle extends Shape {
+    double radius;
+    
+    Circle(String c, double r) { 
+        super(c); 
+        this.radius = r; 
+    }
+    
+    @Override
+    double area() { 
+        return Math.PI * radius * radius; 
+    }
+}</code></pre>
+          </div>
+        </div>
+        <div class="cheat-sheet-actions">
+          <a href="#" class="btn primary">Download PDF</a>
+          <a href="#" class="btn ghost">View Full</a>
+        </div>
+      </div>
+
+      <div class="cheat-sheet-card">
+        <div class="cheat-sheet-header">
+          <h3>Inheritance</h3>
+          <span class="difficulty-badge">Core</span>
+        </div>
+        <div class="cheat-sheet-preview">
+          <h4>Coming Soon...</h4>
+          <p>More cheat sheets are being added regularly. Check back for updates!</p>
+        </div>
+        <div class="cheat-sheet-actions">
+          <a href="contact.html" class="btn ghost">Request Topics</a>
+        </div>
+      </div>
+
+      <div class="cheat-sheet-card">
+        <div class="cheat-sheet-header">
+          <h3>Polymorphism</h3>
+          <span class="difficulty-badge">Core</span>
+        </div>
+        <div class="cheat-sheet-preview">
+          <h4>Coming Soon...</h4>
+          <p>More cheat sheets are being added regularly. Check back for updates!</p>
+        </div>
+        <div class="cheat-sheet-actions">
+          <a href="contact.html" class="btn ghost">Request Topics</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cheat-sheets-cta">
+      <h2>🚀 Want More Content?</h2>
+      <p>These cheat sheets are just a preview of our comprehensive Tier-1 preparation materials.</p>
+      <div class="actions">
+        <a class="btn primary" href="courses.html">Explore Full Courses</a>
+        <a class="btn ghost" href="contact.html">Get Custom Materials</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <strong>CoVaib-DeepLearn</strong><br />
+        <small class="muted">Elite Interview Prep — MAANG++ & Tier-1</small>
+      </div>
+      <div class="footer-actions">
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="cheat-sheets.html">Cheat Sheets</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="muted">© <span id="year"></span> CoVaib-DeepLearn — All rights reserved</div>
+    </div>
+  </footer>
+
+  <a href="#top" id="backToTop" class="back-to-top"><span class="btn ghost">Back to top ↑</span></a>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll',()=>{
+      if(window.scrollY>300){backToTop.classList.add('show')}else{backToTop.classList.remove('show')}
+    });
+    // offer banner close and dynamic positioning
+    (function(){
+      const banner=document.getElementById('offerBanner');
+      const close=document.getElementById('offerClose');
+      const body=document.body;
+      const header=document.querySelector('.site-header');
+      function updateBannerPosition(){
+        if(header&&banner){
+          const headerHeight=header.offsetHeight;
+          banner.style.top=headerHeight+'px';
+        }
+      }
+      function updateBannerState(){
+        if(banner&&banner.style.display!=='none'){
+          body.classList.add('has-offer-banner');
+          updateBannerPosition();
+        }else{
+          body.classList.remove('has-offer-banner');
+        }
+      }
+      if(sessionStorage.getItem('offerDismissed')==='1'){
+        if(banner)banner.style.display='none';
+      }else{
+        body.classList.add('has-offer-banner');
+      }
+      updateBannerPosition();
+      updateBannerState();
+      window.addEventListener('resize',updateBannerPosition);
+      close&&close.addEventListener('click',()=>{
+        if(banner)banner.style.display='none';
+        sessionStorage.setItem('offerDismissed','1');
+        body.classList.remove('has-offer-banner');
+      });
+    })();
+  </script>
+</body>
+</html>
