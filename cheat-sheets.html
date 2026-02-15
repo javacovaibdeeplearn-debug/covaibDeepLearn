@@ -1,13 +1,16 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Java Cheat Sheets — CoVaib-DeepLearn</title>
-  <meta name="description" content="Free Java cheat sheets covering OOP concepts, interfaces, abstract classes, and more. Practical reference materials for interview preparation." />
+  <meta name="description"
+    content="Free Java cheat sheets covering OOP concepts, interfaces, abstract classes, and more. Practical reference materials for interview preparation." />
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="icon" href="assets/logo-512.png" />
 </head>
+
 <body>
   <header class="site-header">
     <div class="wrap header-inner">
@@ -23,19 +26,21 @@
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="courses.html">Courses</a>
-        <a href="free-content.html">Free Content</a>
-        <a href="contact.html" class="cta">Connect</a>
+        <!-- <a href="free-content.html">Free Content</a>
+        <a href="contact.html" class="cta">Connect</a> -->
       </nav>
     </div>
   </header>
 
   <main class="wrap section">
     <h1>📚 Free Java Cheat Sheets</h1>
-    <p class="muted">Practical reference materials from our Tier-1 preparation journey. Download, study, and ace your interviews.</p>
+    <p class="muted">Practical reference materials from our Tier-1 preparation journey. Download, study, and ace your
+      interviews.</p>
 
     <div class="cheat-sheets-intro">
       <h2>🎯 Why These Cheat Sheets?</h2>
-      <p>These aren't just theory - they're battle-tested materials used in real MAANG++ interview preparation. Each sheet covers:</p>
+      <p>These aren't just theory - they're battle-tested materials used in real MAANG++ interview preparation. Each
+        sheet covers:</p>
       <ul class="bullet">
         <li><strong>Core Concepts</strong> — Clear definitions and explanations</li>
         <li><strong>JVM Internals</strong> — How it works under the hood</li>
@@ -52,8 +57,9 @@
         </div>
         <div class="cheat-sheet-preview">
           <h4>Concept:</h4>
-          <p>Contract with method signatures, constants, and default/static methods. Supports multiple inheritance of type.</p>
-          
+          <p>Contract with method signatures, constants, and default/static methods. Supports multiple inheritance of
+            type.</p>
+
           <h4>Why Interfaces?:</h4>
           <ul>
             <li><strong>Decoupling:</strong> Code against contracts (List vs ArrayList)</li>
@@ -110,7 +116,7 @@ class Report {
             <li>Declared with <code>abstract</code>, cannot be instantiated directly</li>
             <li>May contain abstract + concrete methods, fields, constructors</li>
           </ul>
-          
+
           <h4>Why Abstract Classes?:</h4>
           <ul>
             <li><strong>Shared state + behavior:</strong> subclasses reuse fields + code</li>
@@ -221,43 +227,44 @@ class Circle extends Shape {
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll',()=>{
-      if(window.scrollY>300){backToTop.classList.add('show')}else{backToTop.classList.remove('show')}
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) { backToTop.classList.add('show') } else { backToTop.classList.remove('show') }
     });
     // offer banner close and dynamic positioning
-    (function(){
-      const banner=document.getElementById('offerBanner');
-      const close=document.getElementById('offerClose');
-      const body=document.body;
-      const header=document.querySelector('.site-header');
-      function updateBannerPosition(){
-        if(header&&banner){
-          const headerHeight=header.offsetHeight;
-          banner.style.top=headerHeight+'px';
+    (function () {
+      const banner = document.getElementById('offerBanner');
+      const close = document.getElementById('offerClose');
+      const body = document.body;
+      const header = document.querySelector('.site-header');
+      function updateBannerPosition() {
+        if (header && banner) {
+          const headerHeight = header.offsetHeight;
+          banner.style.top = headerHeight + 'px';
         }
       }
-      function updateBannerState(){
-        if(banner&&banner.style.display!=='none'){
+      function updateBannerState() {
+        if (banner && banner.style.display !== 'none') {
           body.classList.add('has-offer-banner');
           updateBannerPosition();
-        }else{
+        } else {
           body.classList.remove('has-offer-banner');
         }
       }
-      if(sessionStorage.getItem('offerDismissed')==='1'){
-        if(banner)banner.style.display='none';
-      }else{
+      if (sessionStorage.getItem('offerDismissed') === '1') {
+        if (banner) banner.style.display = 'none';
+      } else {
         body.classList.add('has-offer-banner');
       }
       updateBannerPosition();
       updateBannerState();
-      window.addEventListener('resize',updateBannerPosition);
-      close&&close.addEventListener('click',()=>{
-        if(banner)banner.style.display='none';
-        sessionStorage.setItem('offerDismissed','1');
+      window.addEventListener('resize', updateBannerPosition);
+      close && close.addEventListener('click', () => {
+        if (banner) banner.style.display = 'none';
+        sessionStorage.setItem('offerDismissed', '1');
         body.classList.remove('has-offer-banner');
       });
     })();
   </script>
 </body>
+
 </html>

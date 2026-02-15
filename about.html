@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About — CoVaib-DeepLearn</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
+
 <body>
   <header class="site-header">
     <div class="wrap header-inner">
@@ -20,8 +22,8 @@
         <a href="index.html">Home</a>
         <a href="about.html" aria-current="page">About</a>
         <a href="courses.html">InDepth Learning Kit</a>
-        <a href="services.html">Services</a>
-        <a href="free-content.html">Free Content</a>
+        <!-- <a href="services.html">Services</a>
+        <a href="free-content.html">Free Content</a> -->
         <a href="contact.html" class="cta">Connect</a>
       </nav>
     </div>
@@ -31,19 +33,25 @@
     <h1>🚀 About CoVaib-DeepLearn</h1>
 
     <div class="about-intro">
-      <p>At <strong>CoVaib-DeepLearn</strong>, we believe average preparation will never unlock Tier-1 opportunities.</p>
-      
-      <p>Founded by a Java System Design Engineer preparing for MAANG++ interviews, CoVaib-DeepLearn began as a personal journey to secure competitive Tier-1 roles. Today, it has grown into a platform for ambitious developers worldwide who want to aim higher, master backend engineering, and prepare with Tier-1 rigor.</p>
+      <p>At <strong>CoVaib-DeepLearn</strong>, we believe average preparation will never unlock Tier-1 opportunities.
+      </p>
+
+      <p>Founded by a Java System Design Engineer preparing for MAANG++ interviews, CoVaib-DeepLearn began as a personal
+        journey to secure competitive Tier-1 roles. Today, it has grown into a platform for ambitious developers
+        worldwide who want to aim higher, master backend engineering, and prepare with Tier-1 rigor.</p>
     </div>
 
     <div class="mission-section">
       <h2>🔥 Our Mission</h2>
-      <p class="mission-text">To make elite prep accessible and empower developers to land competitive MAANG++ & Tier-1 roles.</p>
+      <p class="mission-text">To make elite prep accessible and empower developers to land competitive MAANG++ & Tier-1
+        roles.</p>
     </div>
 
     <div class="founder-story">
       <h2>👨‍💻 Founder Story</h2>
-      <p>Built by an Aspirant, for Aspirants — Designed by someone on the same journey, sharing the exact Tier-1 playbook. The course material is battle-tested against real interview patterns and built from the exact study playbook used by the founder.</p>
+      <p>Built by an Aspirant, for Aspirants — Designed by someone on the same journey, sharing the exact Tier-1
+        playbook. The course material is battle-tested against real interview patterns and built from the exact study
+        playbook used by the founder.</p>
     </div>
 
     <div class="course-structure">
@@ -79,7 +87,8 @@
           </div>
         </div>
       </div>
-      <p class="structure-note">This ensures you learn, practice, revise, and apply — the exact formula Tier-1 engineers follow.</p>
+      <p class="structure-note">This ensures you learn, practice, revise, and apply — the exact formula Tier-1 engineers
+        follow.</p>
     </div>
 
     <div style="margin-top:18px">
@@ -106,43 +115,44 @@
   <script>
     document.getElementById('year2').textContent = new Date().getFullYear();
     const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll',()=>{
-      if(window.scrollY>300){backToTop.classList.add('show')}else{backToTop.classList.remove('show')}
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) { backToTop.classList.add('show') } else { backToTop.classList.remove('show') }
     });
     // offer banner close and dynamic positioning
-    (function(){
-      const banner=document.getElementById('offerBanner');
-      const close=document.getElementById('offerClose');
-      const body=document.body;
-      const header=document.querySelector('.site-header');
-      function updateBannerPosition(){
-        if(header&&banner){
-          const headerHeight=header.offsetHeight;
-          banner.style.top=headerHeight+'px';
+    (function () {
+      const banner = document.getElementById('offerBanner');
+      const close = document.getElementById('offerClose');
+      const body = document.body;
+      const header = document.querySelector('.site-header');
+      function updateBannerPosition() {
+        if (header && banner) {
+          const headerHeight = header.offsetHeight;
+          banner.style.top = headerHeight + 'px';
         }
       }
-      function updateBannerState(){
-        if(banner&&banner.style.display!=='none'){
+      function updateBannerState() {
+        if (banner && banner.style.display !== 'none') {
           body.classList.add('has-offer-banner');
           updateBannerPosition();
-        }else{
+        } else {
           body.classList.remove('has-offer-banner');
         }
       }
-      if(sessionStorage.getItem('offerDismissed')==='1'){
-        if(banner)banner.style.display='none';
-      }else{
+      if (sessionStorage.getItem('offerDismissed') === '1') {
+        if (banner) banner.style.display = 'none';
+      } else {
         body.classList.add('has-offer-banner');
       }
       updateBannerPosition();
       updateBannerState();
-      window.addEventListener('resize',updateBannerPosition);
-      close&&close.addEventListener('click',()=>{
-        if(banner)banner.style.display='none';
-        sessionStorage.setItem('offerDismissed','1');
+      window.addEventListener('resize', updateBannerPosition);
+      close && close.addEventListener('click', () => {
+        if (banner) banner.style.display = 'none';
+        sessionStorage.setItem('offerDismissed', '1');
         body.classList.remove('has-offer-banner');
       });
     })();
   </script>
 </body>
+
 </html>
