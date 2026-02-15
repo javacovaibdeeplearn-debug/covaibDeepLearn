@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Design Master Grid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Latest Font Awesome 6 for full icon support -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #020617;
+    }
+
+    /* Neon rainbow text for grid cells */
+    .grid-cell {
+      position: relative;
+      padding: 0.7rem;
+      min-height: 85px;
+      border: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      line-height: 1.2;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #0f172a;
+      background-clip: padding-box;
+      cursor: pointer;
+    }
+
+    .grid-cell span, .grid-cell {
+      background-image: linear-gradient(135deg,#22d3ee,#818cf8,#facc15,#4ade80,#fb7185);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px rgba(34, 211, 238, 0.1);
+    }
+
+    .grid-cell:nth-of-type(3n) {
+      background-image: linear-gradient(135deg,#f472b6,#38bdf8,#a855f7);
+    }
+    .grid-cell:nth-of-type(4n) {
+      background-image: linear-gradient(135deg,#4ade80,#fbbf24,#f87171);
+    }
+
+    .grid-cell:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.5);
+      z-index: 20;
+      border-color: #6366f1;
+      background: #1e293b;
+    }
+
+    .today {
+      border: 2px solid #ec4899 !important;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+    }
+    
+    .pin {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #ec4899;
+      color: white;
+      font-size: 0.55rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 900;
+      -webkit-text-fill-color: white;
+      text-shadow: none;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+    }
+
+    .section-title {
+      grid-column: 1 / -1;
+      background: #1e293b;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.8rem;
+      border: 1px solid #334155;
+      margin-top: 1.5rem;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    /* High-contrast Neon Social Icons */
+    .neon-icon {
+      filter: drop-shadow(0 0 5px currentColor);
+      transition: all 0.3s ease;
+      opacity: 1;
+      display: inline-block;
+    }
+    .neon-icon:hover {
+      transform: translateY(-4px) scale(1.2);
+      filter: drop-shadow(0 0 15px currentColor);
+    }
+
+    .brand-glow {
+      color:#fbbf24;
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+    }
+
+    .title-gradient {
+      background: linear-gradient(to right, #fbbf24, #22d3ee, #c084fc);
+      -webkit-background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.2));
+    }
+
+    .header-border {
+      border-bottom: 1px solid #1e293b;
+      background: linear-gradient(to bottom, #020617, #0f172a);
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <div class="max-w-7xl mx-auto p-4 md:p-8">
+    <!-- Top Header -->
+    <header class="flex flex-col md:flex-row items-center justify-between mb-10 pb-8 gap-8 header-border">
+      
+      <!-- Left: Social Icons -->
+      <div class="flex items-center gap-6 text-3xl">
+        <a title="LinkedIn" href="https://www.linkedin.com/company/covaib-deeplearn/posts/?feedView=all" target="_blank" class="neon-icon text-sky-400">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a title="X (Twitter)" href="https://x.com/CovaibDeeplearn" target="_blank" class="neon-icon text-white">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a title="YouTube" href="https://www.youtube.com/channel/UCfpvfa9gRPIN-SSkiCMiBPA/community" target="_blank" class="neon-icon text-red-500">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a title="Facebook" href="https://www.facebook.com/profile.php?id=61585531406949" target="_blank" class="neon-icon text-blue-500">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a title="WhatsApp" href="https://chat.whatsapp.com/LDsP8blfxph91hZt8rqiQX" target="_blank" class="neon-icon text-green-500">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+      <!-- Center: Brand + Title -->
+      <div class="text-center order-first md:order-none">
+        <div class="text-[0.6rem] font-black tracking-[0.5em] uppercase brand-glow mb-2">CoVaib DeepLearn</div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tighter title-gradient">
+          SYSTEM DESIGN MATRIX
+        </h1>
+      </div>
+
+      <!-- Right: CTA -->
+      <div class="flex items-center">
+        <a href="https://covaibdeeplearn.gumroad.com/l/CoVaibDeepLearn-SystemDesign" target="_blank" class="group relative px-8 py-4 bg-pink-600 text-white font-black rounded-sm transition-all hover:bg-pink-500 shadow-2xl shadow-pink-900/40">
+          <span class="relative z-10 tracking-widest text-xs">DOWNLOAD ALL NOTES</span>
+          <div class="absolute inset-0 bg-pink-400 blur-xl opacity-0 group-hover:opacity-30 transition-opacity"></div>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Grid Content -->
+    <main>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-l border-t border-slate-800">
+
+        <!-- Foundations -->
+        <div class="section-title">Foundations</div>
+        <div class="grid-cell today"><span class="pin">Today</span>Scalability vs Performance</div>
+        <div class="grid-cell">Horizontal vs Vertical Scaling</div>
+        <div class="grid-cell">Load Balancer</div>
+        <div class="grid-cell">Cache</div>
+        <div class="grid-cell">Caching Layers</div>
+        <div class="grid-cell">Microservice Architecture</div>
+        <div class="grid-cell">CDN</div>
+        <div class="grid-cell">Law of Demeter</div>
+        <div class="grid-cell">Multi-Region Deployment</div>
+        <div class="grid-cell">Event-Driven Architecture</div>
+
+        <!-- Networking & Proxies -->
+        <div class="section-title">Networking & Proxies</div>
+        <div class="grid-cell">Reverse Proxy vs Load Balancer</div>
+        <div class="grid-cell">Performance vs Scalability</div>
+        <div class="grid-cell">Asynchronous System</div>
+        <div class="grid-cell">Synchronous System</div>
+        <div class="grid-cell">Reverse Proxy</div>
+        <div class="grid-cell">Forward vs Reverse Proxy</div>
+        <div class="grid-cell">DNS</div>
+
+        <!-- Data & Storage -->
+        <div class="section-title">Data & Storage</div>
+        <div class="grid-cell">NoSQL Database</div>
+        <div class="grid-cell">DB Sharding & Partitioning</div>
+        <div class="grid-cell">Consistency & Availability</div>
+        <div class="grid-cell">RDBMS Architecture</div>
+        <div class="grid-cell">Indexes</div>
+        <div class="grid-cell">Blob Storage</div>
+
+        <!-- Distributed Systems -->
+        <div class="section-title">Distributed Systems</div>
+        <div class="grid-cell">CAP Theorem</div>
+        <div class="grid-cell">Synchronous Communication</div>
+        <div class="grid-cell">Communication Protocols</div>
+        <div class="grid-cell">Autoscaling</div>
+        <div class="grid-cell">Magical Numbers</div>
+        <div class="grid-cell">Transactions Across DCs</div>
+        <div class="grid-cell">Paxos</div>
+        <div class="grid-cell">Consistent Hashing</div>
+        <div class="grid-cell">Scalability, Availability, Stability</div>
+        <div class="grid-cell">Proxy in Distributed Systems</div>
+        <div class="grid-cell">Load Balancer vs API Gateway</div>
+        <div class="grid-cell">Message Queues</div>
+        <div class="grid-cell">Redundancy</div>
+        <div class="grid-cell">Latency vs Throughput</div>
+
+        <!-- Reliability & Resilience -->
+        <div class="section-title">Reliability & Resilience</div>
+        <div class="grid-cell">Rate Limiter</div>
+        <div class="grid-cell">Circuit Breaker</div>
+        <div class="grid-cell">Failover & DR</div>
+        <div class="grid-cell">Heartbeats & Health Checks</div>
+        <div class="grid-cell">CORS</div>
+        <div class="grid-cell">Idempotency</div>
+        <div class="grid-cell">Cache Invalidation</div>
+
+        <!-- Security & Communication -->
+        <div class="section-title">Security & Communication</div>
+        <div class="grid-cell">SSO</div>
+        <div class="grid-cell">AuthN & AuthZ</div>
+        <div class="grid-cell">gRPC vs REST</div>
+        <div class="grid-cell">Webhooks</div>
+        <div class="grid-cell">WebSockets</div>
+
+        <!-- Design Principles -->
+        <div class="section-title">Design Principles</div>
+        <div class="grid-cell">Distributed Systems Overview</div>
+        <div class="grid-cell">YAGNI</div>
+        <div class="grid-cell">OCP</div>
+        <div class="grid-cell">SRP</div>
+        <div class="grid-cell">ISP & DIP</div>
+
+      </div>
+    </main>
+    
+    <footer class="mt-16 text-center text-slate-600 text-[0.65rem] border-t border-slate-900 pt-8 tracking-widest uppercase">
+      &copy; 2025 CoVaib DeepLearn. Deep Dive into Distributed Systems.
+    </footer>
+  </div>
+
+</body>
+</html>

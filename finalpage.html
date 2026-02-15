@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>60 Days JVM Mastery: Deadlocks Deep Dive</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-color: #f59e0b; /* Amber 500 (Gold/Yellow) */
+            --accent-color: #3b82f6; /* Blue 500 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark Gray 900 */
+            color: #e5e7eb; /* Light Gray 200 */
+        }
+        .slide-card {
+            background-color: #1f2937; /* Dark Gray 800 */
+            border: 1px solid #374151; /* Gray 700 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            border-radius: 0.75rem; /* rounded-xl */
+        }
+        .text-gradient {
+            background: -webkit-linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        code {
+            font-family: monospace;
+            color: #4ade80; /* Green 400 */
+        }
+        pre {
+            background-color: #111827; /* Extra dark background for code blocks */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            border: 1px solid #374151;
+            white-space: pre-wrap; /* Allows long lines to wrap */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</head>
+<body class="min-h-screen">
+<nav class="bg-gray-900 border-b border-gray-800 py-3 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Watermark/Logo in Header -->
+                <img src="Watermark.png" alt="CoVaib DeepLearn Logo" class="w-10 h-10 rounded-full border border-gray-700">
+                <div class="text-amber-500 font-bold text-xl flex items-center">
+                    CoVaib DeepLearn
+                </div>
+            </div>
+           <div class="flex items-center space-x-6">
+                <a title="LinkedIn" href="https://www.linkedin.com/company/covaib-deeplearn/posts/?feedView=all" target="_blank" class="neon-icon text-[#0077b5]">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a title="X (Twitter)" href="https://x.com/CovaibDeeplearn" target="_blank" class="neon-icon text-white">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a title="YouTube" href="https://www.youtube.com/channel/UCfpvfa9gRPIN-SSkiCMiBPA/community" target="_blank" class="neon-icon text-[#ff0000]">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a title="Facebook" href="https://www.facebook.com/profile.php?id=61585531406949" target="_blank" class="neon-icon text-[#1877f2]">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a title="WhatsApp" href="https://chat.whatsapp.com/LDsP8blfxph91hZt8rqiQX" target="_blank" class="neon-icon text-[#25d366]">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="bg-gray-900/90 shadow-xl border-b border-gray-700 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                ⚙️💭 The real interview edge?-👉 Knowing how the JVM breathes beneath your code.
+            </h2>
+            
+         
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+         
+
+        <!-- 1. Mastery Pillars and Transformation Goal -->
+        <section id="core-pillars" class="mb-16">
+            <div class="slide-card p-8 md:p-12">
+                <h3 class="text-3xl font-bold text-amber-400 mb-6 flex items-center">
+                    <i data-lucide="sparkles" class="w-7 h-7 mr-3 text-blue-400"></i> Master What Others Skip
+                </h3>
+                <p class="text-gray-300 text-lg mb-6">
+                    <strong class="block mt-2">🧠 Think like the JVM | 💻 Code like an Architect | 🎯 Interview like MAANG</strong>
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600"><span class="text-lg font-semibold text-white">✨ JVM Internals</span></div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600"><span class="text-lg font-semibold text-white">🧩 Object Headers</span></div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600"><span class="text-lg font-semibold text-white">🧮 Bytecode Execution</span></div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600"><span class="text-lg font-semibold text-white">🔥 GC & Metaspace</span></div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600"><span class="text-lg font-semibold text-white">⚡ HotSpot Optimizations</span></div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600"><span class="text-lg font-semibold text-white">🧠 JIT Inlining</span></div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg border border-gray-600 col-span-2 sm:col-span-1 md:col-span-1"><span class="text-lg font-semibold text-white">🏗️ Real-world Tie-ins</span></div>
+                </div>
+            </div>
+        </section>
+
+    
+        <div class="text-center pt-8 pb-16">
+            <h3 class="text-3xl font-extrabold text-white mb-4">
+                ☕⚙️ Future JVM Wizard — Ready to start?
+            </h3>
+            <p class="text-xl text-gray-400 mb-6">
+                Every sunrise is your compiler — rebuild yourself daily. <br>
+                Let your caffeine fuel clarity ☀️, your discipline drive depth 🧘‍♀️, and your Java brew power your journey 💻🔥
+            </p>
+            <p class="text-2xl font-bold text-amber-400">
+                💫 Our 60-Day JVM Mastery Journey starts this Friday, 1st November! On 
+            </p>
+            <a href="https://www.linkedin.com/company/covaib-deeplearn" target="_blank" class="mt-6 inline-block text-xl font-semibold text-Red-400 hover:text-White-300 border-b border-Red-400 pb-1">
+              Covaib-deepLearn Linked Page  &rarr;
+            </a>
+        </br>
+        <p class="text-2xl font-bold text-amber-400">
+                For more Java Interview Kits and Advanced level learning from Code to System level visit 
+            </p>
+           
+        </div>
+
+
+        <!-- 🧩 Slide 4 – The CoVaib DeepLearn Architect Series -->
+        <section id="architect-series" data-slide="4" class="px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-800">
+            <div class="text-center max-w-7xl mx-auto mb-12">
+                <h2 class="text-4xl font-extrabold text-white mb-4">
+                    <i data-lucide="layers-3" class="inline-block w-8 h-8 mr-2 text-blue-400"></i> The CoVaib DeepLearn Architect Series
+                </h2>
+                <p class="text-xl text-gray-400">
+                    A collection of advanced masterclasses designed for senior and architect-level Java mastery.
+                </p>
+            </div>
+
+            <!-- Course Grid (Now single column and centered) -->
+            <div class="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
+
+                <!-- 1. Java Architect X Series -->
+                <div class="slide-card p-6 rounded-xl course-card border-t-4 border-amber-500 text-center">
+                    <h3 class="text-xl font-bold text-amber-500 mb-2">1️⃣ Java Architect X Series</h3>
+                    <p class="text-base text-white mb-3 font-semibold">OOP, Concurrency & JVM Performance</p>
+                    <p class="text-sm text-gray-400 mb-4">The Ultimate Advanced Mastery Lab</p>
+                    <div class="my-4">
+                        <img src="JAVAMASTERY.jpg" alt="Course Module Summary Placeholder" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1e293b/f8fafc?text=Java+Architect+X+Series'" class="mx-auto rounded-lg border border-gray-700 w-full max-w-xs md:max-w-sm"/>
+                    </div>
+                    <p class="text-base font-bold text-blue-400 mb-2">🧩 Highlights:</p>
+                    <!-- Highlights are left-aligned within the centered card for readability -->
+                    <ul class="list-disc text-left mx-auto max-w-md text-gray-400 space-y-1 mb-4 pl-5">
+                        <li>OOP Principles (Encapsulation, Inheritance, Polymorphism, Composition, Abstraction)</li>
+                        <li>JVM Internals: Class Loaders, Memory Areas, Execution Engine</li>
+                        <li>Concurrency & Performance Optimization</li>
+                        <li>Real-world Case Studies (Spring Boot, Async REST APIs, Thread Pool Designs)</li>
+                    </ul>
+                    <p class="text-sm font-semibold text-gray-300 mb-4">🧠 Learn to think like the JVM — from object creation to thread scheduling.</p>
+                    <a href="https://covaibdeeplearn.gumroad.com/l/qqallm" target="_blank" class="mt-auto block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">🔗 Get it on Gumroad</a>
+                </div>
+
+                <!-- 2. Advanced Java Class Design -->
+                <div class="slide-card p-6 rounded-xl course-card border-t-4 border-blue-500 text-center">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">2️⃣ Advanced Java Class Design & Object Management</h3>
+                    <p class="text-base text-white mb-3 font-semibold">Senior-Level Deep Dive</p>
+                    <p class="text-sm text-gray-400 mb-4">(Focus: Constructors, cloning, immutability, final/static behaviors, advanced object handling)</p>
+                    <div class="my-4">
+                        <img src="objecjava.jpg" alt="Class Design Contents Placeholder" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1e293b/f8fafc?text=Advanced+Class+Design'" class="mx-auto rounded-lg border border-gray-700 w-full max-w-xs md:max-w-sm"/>
+                    </div>
+                    <p class="text-base font-bold text-blue-400 mb-2">🧩 Highlights:</p>
+                    <ul class="list-disc text-left mx-auto max-w-md text-gray-400 space-y-1 mb-4 pl-5">
+                        <li><strong>this</strong>, **super** & Constructor Chaining – JVM init order, inheritance pitfalls</li>
+                        <li>Copy Constructor & Object Cloning – Deep vs shallow copies, custom cloning logic</li>
+                        <li>Singleton Patterns – Enum-based, Reflection & Serialization-safe implementations</li>
+                        <li>**final**, **finally**, **finalize** – JVM GC lifecycle, cleanup behavior</li>
+                        <li>Immutable Classes & Collections – Defensive copies, concurrency-safe designs</li>
+                    </ul>
+                    <p class="text-sm font-semibold text-gray-300 mb-4">🧠 Master object lifecycle and design Java like a JVM engineer.</p>
+                    <a href="https://covaibdeeplearn.gumroad.com//l/pflsru" target="_blank" class="mt-auto block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">🔗 Get it on Gumroad</a>
+                </div>
+
+                <!-- 3. Advanced Multithreading -->
+                <div class="slide-card p-6 rounded-xl course-card border-t-4 border-amber-500 text-center">
+                    <h3 class="text-xl font-bold text-amber-500 mb-2">3️⃣ Advanced Multithreading, Concurrency & High-Performance Data Structures</h3>
+                    <p class="text-base text-white mb-3 font-semibold">ExecutorService, CompletableFuture, ForkJoin, and lock-free structures</p>
+                    <p class="text-sm text-gray-400 mb-4"></p>
+                    <div class="my-4">
+                        <img src="multithreadingjava.jpg" alt="Concurrency Course Topics Placeholder" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1e293b/f8fafc?text=Multithreading+Deep+Dive'" class="mx-auto rounded-lg border border-gray-700 w-full max-w-xs md:max-w-sm"/>
+                    </div>
+                    <p class="text-base font-bold text-blue-400 mb-2">🧩 Highlights:</p>
+                    <ul class="list-disc text-left mx-auto max-w-md text-gray-400 space-y-1 mb-4 pl-5">
+                        <li>Multithreading Foundations – Thread lifecycle, synchronization, locks, and **volatile**</li>
+                        <li>ExecutorService, Future & CompletableFuture – Async workflows & parallel composition</li>
+                        <li>ForkJoin Framework – Work-stealing, divide-and-conquer concurrency</li>
+                        <li>Atomic & ThreadLocal Utilities – Atomic variables, memory visibility, pitfalls</li>
+                        <li>ConcurrentSkipListMap & Set – Thread-safe sorted collections</li>
+                    </ul>
+                    <p class="text-sm font-semibold text-gray-300 mb-4">🧠 Gain production-grade mastery of concurrency & lock-free architectures.</p>
+                    <a href="https://covaibdeeplearn.gumroad.com//l/kyhahk" target="_blank" class="mt-auto block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">🔗 Get it on Gumroad</a>
+                </div>
+
+                <!-- 4. Java Collections, Functional Programming & Streams -->
+                <div class="slide-card p-6 rounded-xl course-card border-t-4 border-blue-500 text-center">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">4️⃣ Java Collections, Functional Programming & Streams</h3>
+                    <p class="text-base text-white mb-3 font-semibold">Senior-Level Deep Dive</p>
+                    <p class="text-sm text-gray-400 mb-4"></p>
+                    <div class="my-4">
+                        <img src="collections.jpg" alt="Streams and Collections Placeholder" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1e293b/f8fafc?text=Functional+Java'" class="mx-auto rounded-lg border border-gray-700 w-full max-w-xs md:max-w-sm"/>
+                    </div>
+                    <p class="text-base font-bold text-blue-400 mb-2">🧩 Highlights:</p>
+                    <ul class="list-disc text-left mx-auto max-w-md text-gray-400 space-y-1 mb-4 pl-5">
+                        <li>Java Collections: Deep dive into List, Set, Map, Queue, Deque performance</li>
+                        <li>Thread-safe collections: ConcurrentHashMap, CopyOnWriteArrayList</li>
+                        <li>Functional Programming: Lambdas, method references, functional interfaces</li>
+                        <li>Java Streams: Stream transformations, parallel streams, lazy evaluation</li>
+                        <li>Collectors: groupingBy, partitioningBy, mapping, joining</li>
+                    </ul>
+                    <p class="text-sm font-semibold text-gray-300 mb-4">🧠 Master modern Java coding styles — clean, functional, and performant.</p>
+                    <a href="https://covaibdeeplearn.gumroad.com//l/yyiem" target="_blank" class="mt-auto block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">🔗 Get it on Gumroad</a>
+                </div>
+
+                <!-- 5. Advanced Java Masterclass – All-in-One Series -->
+                <div class="slide-card p-6 rounded-xl course-card border-t-4 border-amber-500 text-center">
+                    <h3 class="text-xl font-bold text-amber-500 mb-2">5️⃣ Advanced Java Masterclass </h3>
+                    <p class="text-base text-white mb-3 font-semibold">All Advance level Java concepts</p>
+                    <p class="text-sm text-gray-400 mb-4"></p>
+                    <div class="my-4">
+                        <img src="advjava.jpg" alt="All-in-One Masterclass Placeholder" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1e293b/f8fafc?text=All-in-One+Masterclass'" class="mx-auto rounded-lg border border-gray-700 w-full max-w-xs md:max-w-sm"/>
+                    </div>
+                    <p class="text-base font-bold text-blue-400 mb-2">🧩 Highlights:</p>
+                    <ul class="list-disc text-left mx-auto max-w-md text-gray-400 space-y-1 mb-4 pl-5">
+                        <li>JVM Internals & Performance, Class Loading & Linking</li>
+                        <li>GC Tuning & Log Analysis, JIT Compiler & HotSpot Optimizations</li>
+                        <li>Java Memory Model (JMM), High-Performance Data Structures</li>
+                        <li>NIO, Async I/O & Reactive Programming</li>
+                        <li>Advanced Concurrency & Virtual Threads (Java 21+)</li>
+                    </ul>
+                    <p class="text-sm font-semibold text-gray-300 mb-4">🧠 The ultimate Java developer transformation — from code to architecture.</p>
+                    <a href="https://covaibdeeplearn.gumroad.com//l/dvysvn" target="_blank" class="mt-auto block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">🔗 Get it on Gumroad</a>
+                </div>
+
+                <!-- 6. Java System-Level OOP -->
+                <div class="slide-card p-6 rounded-xl course-card border-t-4 border-blue-500 text-center">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">6️⃣ Java System-Level OOP</h3>
+                    <p class="text-base text-white mb-3 font-semibold">Real-world OOP modeling & architecture design</p>
+                    <p class="text-sm text-gray-400 mb-4"></p>
+                    <div class="my-4">
+                        <img src="OOPJAVA.jpg" alt="System-Level OOP Design Placeholder" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1e293b/f8fafc?text=System-Level+OOP'" class="mx-auto rounded-lg border border-gray-700 w-full max-w-xs md:max-w-sm"/>
+                    </div>
+                    <p class="text-base font-bold text-blue-400 mb-2">🧩 Highlights:</p>
+                    <ul class="list-disc text-left mx-auto max-w-md text-gray-400 space-y-1 mb-4 pl-5">
+                        <li>Translating business problems into OOP architecture</li>
+                        <li>Design principles: SRP, OCP, DIP, LSP</li>
+                        <li>System-level modeling: entity relationships, composition, inheritance</li>
+                        <li>Integrating OOP with design patterns (Factory, Strategy, Observer)</li>
+                        <li>Applying OOP to real-world systems (banking, payments, open banking APIs)</li>
+                    </ul>
+                    <p class="text-sm font-semibold text-gray-300 mb-4">🧠 Think like a system designer — model scalable, modular architectures in Java.</p>
+                    <a href="https://covaibdeeplearn.gumroad.com//l/CoVaibDeepLearn-SystemLevelJavaOOP" target="_blank" class="mt-auto block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">🔗 Get it on Gumroad</a>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-16 max-w-4xl mx-auto p-8 bg-gray-900/50 rounded-xl border border-gray-700">
+                <blockquote class="text-2xl italic font-serif text-white">
+                    “Every CoVaib DeepLearn course is built like an architect’s lab — code, bytecode, GC, and real-world systems.
+                    <br><span class="block mt-2 font-bold text-amber-400">You don’t just learn Java. You master how Java thinks.</span>”
+                </blockquote>
+                
+            </div>
+        </section>
+
+
+        <!-- 🌱 Slide 5 – Personal Development Space -->
+        <section id="personal" data-slide="5" class="px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-800">
+            <div class="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl">
+                <div class="grid md:grid-cols-2 bg-personal-split">
+                    <!-- Left Half: Calm Gradient & Icons -->
+                    <div class="p-8 md:p-12 text-center flex flex-col justify-center items-center h-full bg-blue-800/70">
+                        <h3 class="text-2xl font-bold text-white mb-4">Level up in code. Level up in consciousness.</h3>
+                        <div class="flex space-x-6 text-white">
+                            <i data-lucide="sparkles" class="w-10 h-10 text-amber-300"></i>
+                            <i data-lucide="meditation" class="w-10 h-10 text-green-300"></i>
+                        </div>
+                    </div>
+                    <!-- Right Half: Quote Card -->
+                    <div class="p-8 md:p-12 bg-gray-800/80">
+                        <div class="p-6 rounded-lg border-2 border-gray-600 bg-gray-900/50 relative transform rotate-1">
+                            <span class="absolute top-0 right-0 -mt-2 -mr-2 text-4xl text-amber-500">📌</span>
+                            <blockquote class="text-2xl font-extrabold leading-snug text-white">
+                                “Discipline builds depth. Every line you debug makes you wiser than yesterday.”
+                            </blockquote>
+                        </div>
+                        <p class="mt-6 text-gray-300 text-sm">
+                            Every day, along with one advanced Java question, you’ll also receive a personal reflection quote — to sharpen both logic and life.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🧩 Slide 6 – Explore the Kit -->
+        <section id="explore" data-slide="6" class="px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-800">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl font-extrabold text-white mb-4">
+                    <i data-lucide="zap" class="inline-block w-8 h-8 mr-2 text-amber-400"></i> Ready to Dominate Your Interview?
+                </h2>
+                <p class="text-xl text-gray-400 mb-8">
+                    Built for developers targeting ₹60LPA+ roles.
+                </p>
+
+                        <!-- 💬 Slide 7 – Join the Community -->
+        <section id="community" data-slide="7" class="px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-800">
+            <div class="max-w-4xl mx-auto slide-card p-10 rounded-xl text-center">
+                <h2 class="text-4xl font-extrabold text-white mb-4">
+                    <i data-lucide="message-circle" class="inline-block w-8 h-8 mr-2 text-blue-400"></i> Join the Java Architect Circle
+                </h2>
+                <p class="text-xl text-gray-400 mb-8">
+                    Exclusive community for JVM mastery and high-level discussion.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <p class="p-4 border-l-4 border-amber-500 bg-gray-900 rounded-lg text-gray-300">💡 Daily advanced Level questions</p>
+                    <p class="p-4 border-l-4 border-amber-500 bg-gray-900 rounded-lg text-gray-300">🧠 JVM & Concurrency deep dives</p>
+                    <p class="p-4 border-l-4 border-amber-500 bg-gray-900 rounded-lg text-gray-300">💬 Live interview discussions</p>
+                </div>
+
+                <a href="https://chat.whatsapp.com/Ch7Dou9rnMj3jzPwUsy2kM" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-full shadow-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition transform hover:scale-[1.02]">
+                    Join the Architect Circle
+                    <i data-lucide="external-link" class="w-5 h-5 ml-2"></i>
+                </a>
+
+                <blockquote class="mt-10 text-2xl italic font-serif text-gray-300">
+                    “Become the developer who thinks like the JVM.”
+                </blockquote>
+            </div>
+        </section>
+    </main>

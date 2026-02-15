@@ -1,13 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL Mastery Matrix | CoVaib DeepLearn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Latest Font Awesome 6 for full icon support -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* CRITICAL: Force background preservation globally */
+    :root {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #020617 !important;
+      margin: 0;
+      padding: 0;
+      color: #f8fafc;
+    }
+
+    /* Grid Container */
+    .matrix-grid {
+      display: grid;
+      border-left: 1px solid #1e293b;
+      border-top: 1px solid #1e293b;
+    }
+
+    /* Grid Cell styling */
+    .grid-cell {
+      position: relative;
+      padding: 1.2rem;
+      min-height: 110px;
+      border-right: 1px solid #1e293b;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      background-color: #0f172a !important; /* Solid background for preservation */
+      cursor: pointer;
+    }
+
+    /* Rainbow Text Effects */
+    .grid-cell {
+      background-image: linear-gradient(135deg,#22d3ee,#818cf8,#facc15,#4ade80,#fb7185);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px rgba(34, 211, 238, 0.1);
+    }
+
+    /* Diverse Gradients */
+    .grid-cell:nth-of-type(2n) { background-image: linear-gradient(135deg,#f472b6,#38bdf8,#a855f7); }
+    .grid-cell:nth-of-type(3n) { background-image: linear-gradient(135deg,#4ade80,#fbbf24,#f87171); }
+    .grid-cell:nth-of-type(4n) { background-image: linear-gradient(135deg,#6366f1,#a855f7,#ec4899); }
+    .grid-cell:nth-of-type(5n) { background-image: linear-gradient(135deg,#22d3ee,#10b981,#f59e0b); }
+
+    .section-title {
+      grid-column: 1 / -1;
+      background-color: #1e293b !important;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 1rem;
+      border-right: 1px solid #334155;
+      border-bottom: 1px solid #334155;
+      margin-top: 2rem;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .neon-icon {
+      filter: drop-shadow(0 0 5px currentColor);
+      display: inline-block;
+    }
+
+    .brand-glow {
+      color:#fbbf24;
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+    }
+
+    .title-gradient {
+      background: linear-gradient(to right, #fbbf24, #22d3ee, #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .header-border {
+      border-bottom: 1px solid #1e293b;
+      background: linear-gradient(to bottom, #020617, #0f172a);
+    }
+
+    /* PRINT REINFORCEMENT: Ensures grid lines and colors appear in PDFs */
+    @media print {
+      body {
+        background-color: #020617 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .matrix-grid {
+        border: 2px solid #1e293b !important; /* Thicker border for PDF engines */
+      }
+      .grid-cell {
+        background-color: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        background-image: none !important;
+        /* Using box-shadow to force "lines" if borders are stripped */
+        box-shadow: inset 0 0 0 1px #1e293b !important;
+      }
+      .section-title {
+        background-color: #1e293b !important;
+        color: #cbd5e1 !important;
+        box-shadow: inset 0 0 0 1px #334155 !important;
+      }
+      .title-gradient {
+        color: #fbbf24 !important;
+        -webkit-text-fill-color: #fbbf24 !important;
+      }
+      .neon-icon {
+        filter: none !important;
+      }
+      .max-w-7xl {
+        width: 100% !important;
+        max-width: none !important;
+      }
+    }
+  </style>
 </head>
-<body>
-    <h1>Hello, World!</h1>
-    <p>This is a sample HTML file.</p>
-    <p>Current Date and Time (UTC): 2026-02-14 19:08:24</p>
+<body class="text-slate-200 antialiased">
+
+  <div class="max-w-7xl mx-auto p-4 md:p-8">
+    <header class="flex flex-col md:flex-row items-center justify-between mb-10 pb-8 gap-8 header-border">
+      
+      <div class="flex items-center gap-8 text-4xl">
+        <a title="LinkedIn" href="https://www.linkedin.com/company/covaib-deeplearn/posts/?feedView=all" target="_blank" class="neon-icon text-sky-400">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a title="X (Twitter)" href="https://x.com/CovaibDeeplearn" target="_blank" class="neon-icon text-white">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a title="YouTube" href="https://www.youtube.com/channel/UCfpvfa9gRPIN-SSkiCMiBPA/community" target="_blank" class="neon-icon text-red-500">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a title="Facebook" href="https://www.facebook.com/profile.php?id=61585531406949" target="_blank" class="neon-icon text-blue-500">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a title="WhatsApp" href="https://chat.whatsapp.com/LDsP8blfxph91hZt8rqiQX" target="_blank" class="neon-icon text-green-500">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+      <div class="text-center order-first md:order-none">
+        <div class="text-[0.75rem] font-black tracking-[0.5em] uppercase brand-glow mb-2">CoVaib DeepLearn</div>
+        <h1 class="text-4xl md:text-6xl font-black tracking-tighter title-gradient">
+          SQL MASTERY MATRIX
+        </h1>
+      </div>
+
+      <div class="flex items-center">
+        <a href="https://covaibdeeplearn.gumroad.com/l/CoVaibDeepLearn-SystemDesign" target="_blank" class="group relative px-10 py-5 bg-pink-600 text-white font-black rounded-sm transition-all hover:bg-pink-500 shadow-2xl shadow-pink-900/40">
+          <span class="relative z-10 tracking-widest text-sm">DOWNLOAD ALL NOTES</span>
+          <div class="absolute inset-0 bg-pink-400 blur-xl opacity-0 group-hover:opacity-30 transition-opacity"></div>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="matrix-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
+        <div class="section-title">Core Querying & Problem Solving</div>
+        <div class="grid-cell">INNER vs LEFT vs RIGHT vs FULL JOIN</div>
+        <div class="grid-cell">SELF JOIN patterns</div>
+        <div class="grid-cell">GROUP BY vs DISTINCT</div>
+        <div class="grid-cell">HAVING vs WHERE</div>
+        <div class="grid-cell">Window Functions</div>
+        <div class="grid-cell">Correlated Subqueries</div>
+        <div class="grid-cell">EXISTS vs IN vs JOIN</div>
+        <div class="grid-cell">CTEs</div>
+        <div class="grid-cell">Recursive CTE</div>
+        <div class="grid-cell">UNION / EXCEPT / INTERSECT</div>
+
+        <div class="section-title">Performance & Indexing</div>
+        <div class="grid-cell">How to read EXPLAIN plans</div>
+        <div class="grid-cell">B-Tree Index</div>
+        <div class="grid-cell">Composite Index</div>
+        <div class="grid-cell">Covering Index</div>
+        <div class="grid-cell">Index Selectivity</div>
+        <div class="grid-cell">Index-only Scan</div>
+        <div class="grid-cell">Index Condition Pushdown</div>
+        <div class="grid-cell">Partial index filter index</div>
+        <div class="grid-cell">Keyset (Seek) Pagination</div>
+        <div class="grid-cell">SARGable vs NON-SARGable</div>
+        <div class="grid-cell">Join Algorithms</div>
+
+        <div class="section-title">Transactions & Concurrency</div>
+        <div class="grid-cell">ACID Principles</div>
+        <div class="grid-cell">Autocommit Boundaries</div>
+        <div class="grid-cell">Deadlock Detection</div>
+        <div class="grid-cell">Dirty Non-repeatable Phantom Reads</div>
+        <div class="grid-cell">Isolation Levels</div>
+        <div class="grid-cell">MVCC Internals</div>
+        <div class="grid-cell">Pessimistic vs Optimistic Locking</div>
+
+        <div class="section-title">Payments & Fintech SQL</div>
+        <div class="grid-cell">Atomic Counters</div>
+        <div class="grid-cell">High-volume Write Batching</div>
+        <div class="grid-cell">Partitioning Basics</div>
+        <div class="grid-cell">Idempotency Keys</div>
+        <div class="grid-cell">Double-spend Scenarios</div>
+        <div class="grid-cell">Unique Constraints + Retry Logic</div>
+        <div class="grid-cell">UPSERT MERGE</div>
+
+      </div>
+    </main>
+    
+    <footer class="mt-20 text-center text-slate-600 text-[0.8rem] border-t border-slate-900 pt-10 tracking-widest uppercase">
+      &copy; 2025 CoVaib DeepLearn. Deep Dive into Database Engineering.
+    </footer>
+  </div>
+
 </body>
 </html>
